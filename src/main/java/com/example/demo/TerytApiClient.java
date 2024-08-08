@@ -2,6 +2,9 @@ package com.example.demo;
 
 import com.example.demo.wsdl.TerytWs1;
 
+import jakarta.xml.ws.WebServiceFeature;
+import jakarta.xml.ws.soap.AddressingFeature;
+
 
 public class TerytApiClient {
 	
@@ -9,9 +12,11 @@ public class TerytApiClient {
 		
 		TerytWs1 t = new TerytWs1();
 		t.setHandlerResolver(new TerytHandler());
+		WebServiceFeature wsAddressing = new AddressingFeature(true);
+		
 	
 		
-		System.out.println(t.getCustom().wyszukajMiejscowosc(miejscowosc, "").getMiejscowosc().size());
+		System.out.println(t.getCustom(wsAddressing).wyszukajMiejscowosc(miejscowosc, "").getMiejscowosc().size());
 		System.out.println("kk");
 		
 		
