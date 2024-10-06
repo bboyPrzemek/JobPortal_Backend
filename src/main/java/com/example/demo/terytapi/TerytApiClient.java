@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.terytapi;
 
 import java.net.URISyntaxException;
 
@@ -8,7 +8,7 @@ import com.example.demo.wsdl.ObjectFactory;
 import com.example.demo.wsdl.WyszukajMiejscowosc;
 import com.example.demo.wsdl.WyszukajMiejscowoscResponse;
 
-public class ApiClient extends WebServiceGatewaySupport {
+public class TerytApiClient extends WebServiceGatewaySupport {
 	
 	public WyszukajMiejscowoscResponse search(String city) throws URISyntaxException {
 		ObjectFactory objectFactory = new ObjectFactory();
