@@ -12,12 +12,13 @@ public class JobOfferService {
 	@Autowired
 	private JobOfferRepository jobOfferRepository;
 	
-	
-	
 	public List<JobOffer> getJobOffers(){
 		List<JobOffer> jobOffers = jobOfferRepository.findAll();
 		System.out.print(jobOffers.size());
 		return jobOffers;
 	}
-
+	
+	public List<JobOffer> searchOffers(String title){
+		return jobOfferRepository.findByTitleContainingIgnoreCase(title);
+	}
 }

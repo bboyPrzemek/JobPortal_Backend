@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.terytapi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,7 +7,7 @@ import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.soap.security.wss4j2.Wss4jSecurityInterceptor;
 
 @Configuration
-public class CityConfiguration {
+public class TerytApiConfig {
 
 	@Bean
 	public Jaxb2Marshaller marshaller() {
@@ -17,8 +17,8 @@ public class CityConfiguration {
 	}
 
 	@Bean
-	public ApiClient countryClient(Jaxb2Marshaller marshaller) {
-		ApiClient client = new ApiClient();
+	public TerytApiClient countryClient(Jaxb2Marshaller marshaller) {
+		TerytApiClient client = new TerytApiClient();
 		client.setDefaultUri("https://uslugaterytws1test.stat.gov.pl/TerytWs1.svc");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);

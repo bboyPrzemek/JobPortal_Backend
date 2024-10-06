@@ -22,7 +22,7 @@ public class OfferConfig {
 		
 			userRepository.save(u);
 			JobOffer j = 
-					new JobOffer("Przykladowa oferta", "opis", Double.valueOf(7000), Double.valueOf(10000), u, l);
+					new JobOffer("Ania", "opis", Double.valueOf(7000), Double.valueOf(10000), u, l);
 			
 			jobOfferRepository.save(j);
 			
@@ -38,9 +38,6 @@ public class OfferConfig {
 				
 				jobOfferRepository.save(j2);
 			}
-			
-			
-			
 		};
 	}
 		
