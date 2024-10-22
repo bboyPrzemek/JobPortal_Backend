@@ -51,20 +51,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web-services</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.xml.ws</groupId>
-			<artifactId>jakarta.xml.ws-api</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-rt -->
-		<dependency>
-			<groupId>com.sun.xml.ws</groupId>
-			<artifactId>jaxws-rt</artifactId>
-			<version>4.0.2</version>
-		</dependency>
 		 <dependency>
             <groupId>org.springframework.ws</groupId>
             <artifactId>spring-ws-security</artifactId>
@@ -95,34 +81,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<!-- tag::wsdl[] -->
-			<plugin>
-				<groupId>com.sun.xml.ws</groupId>
-				<artifactId>jaxws-maven-plugin</artifactId>
-				<version>3.0.0</version>
-				<executions>
-					<execution>
-						<id>xjc-schema1</id>
-						<goals>
-							<goal>wsimport</goal>
-						</goals>
-						<configuration>
-							<xjcArgs>
-								<xjcArg>-XautoNameResolution</xjcArg>
-							</xjcArgs>
-							<packageName>com.example.demo.wsdl</packageName>
-							<wsdlUrls>
-								<wsdlUrl>https://uslugaterytws1test.stat.gov.pl/wsdl/terytws1.wsdl</wsdlUrl>
-							</wsdlUrls>
-							<sourceDestDir>${sourcesDir}</sourceDestDir>
-							<destDir>${classesDir}</destDir>
-							<extension>true</extension>
-						</configuration>
-					</execution>
-				</executions>
-
-
 			</plugin>
 		</plugins>
 	</build>

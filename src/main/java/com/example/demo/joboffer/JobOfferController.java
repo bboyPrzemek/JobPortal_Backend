@@ -1,5 +1,6 @@
 package com.example.demo.joboffer;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,14 +19,12 @@ public class JobOfferController {
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.GET)
 	public List<JobOffer> getData() {
-		List<JobOffer> s = jobOfferService.getJobOffers();
-		System.out.print(s.size());
-		return s;
+		return jobOfferService.getJobOffers();
 	}
 	
 	@CrossOrigin
 	@GetMapping("/search")
-	public List<JobOffer> searchData(@RequestParam(value = "title") String title){
-		return jobOfferService.searchOffers(title);
+	public List<JobOffer> searchData(@RequestParam(value = "title") String title, @RequestParam(value = "city") String city){
+		return jobOfferService.searchOffers(title, city);
 	}
 }

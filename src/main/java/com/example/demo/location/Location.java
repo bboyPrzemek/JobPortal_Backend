@@ -19,10 +19,8 @@ public class Location {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
 	private String city;
-	private String province;
 	
 	public Location(String city, String province) {
 		this.city = city;
-		this.province = province;
 	}
 }

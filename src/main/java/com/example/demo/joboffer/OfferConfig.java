@@ -18,6 +18,7 @@ public class OfferConfig {
 		return args->{
 			User  u = new User("a", "b", "TTMS Koszalin");
 			Location l = new Location("Koszalin", "zachodniopomorskie");
+			
 			locationRepository.save(l);
 		
 			userRepository.save(u);
@@ -38,6 +39,16 @@ public class OfferConfig {
 				
 				jobOfferRepository.save(j2);
 			}
+			
+			Location l2 = new Location("Warszawa", "Mazowieckie");
+			Location l3 = new Location("Gdańsk", "pomorskie");
+			Location l4 = new Location("Kraków", "małopolskie");
+			Location l5= new Location("Lublin", "lubelskie");
+			
+			locationRepository.save(l2);
+			locationRepository.save(l3);
+			locationRepository.save(l4);
+			locationRepository.save(l5);
 		};
 	}
 		

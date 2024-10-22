@@ -1,5 +1,6 @@
 package com.example.demo.joboffer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class JobOfferService {
 		return jobOffers;
 	}
 	
-	public List<JobOffer> searchOffers(String title){
-		return jobOfferRepository.findByTitleContainingIgnoreCase(title);
+	public List<JobOffer> searchOffers(String title, String city){
+		return jobOfferRepository.findByTitleContainingIgnoreCase(title, city);
 	}
 }
