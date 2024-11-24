@@ -1,15 +1,14 @@
 package com.example.demo.joboffer;
 
 import java.util.Set;
-
-import org.hibernate.FetchMode;
-import org.hibernate.annotations.Fetch;
-
 import com.example.demo.experience.Experience;
 import com.example.demo.location.Location;
+import com.example.demo.position.Position;
 import com.example.demo.technology.Technology;
 import com.example.demo.user.User;
+import com.example.demo.worktype.Worktype;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -44,6 +43,9 @@ public class JobOffer {
 	@ManyToOne
 	private Location location;
 	
+	@ManyToOne
+	private Position position;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable( 
 				name = "offers_technologies", 
@@ -58,19 +60,30 @@ public class JobOffer {
 				inverseJoinColumns = @JoinColumn(name = "experience_id"))
 	private Set<Experience> experiences;
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable( 
+				name = "offers_worktypes", 
+				joinColumns = @JoinColumn(name = "offer_id"),
+				inverseJoinColumns = @JoinColumn(name = "worktype_id"))
+	private Set<Worktype> worktypes;
+	
 	public JobOffer(String title, String details, User user) {
 		this.title = title;
 		this.details = details;
 		this.user = user;
 	}
 	
-	public JobOffer(String title, String details,Double salaryMin, Double salaryMax, User user, Location location) {
+	public JobOffer(String title, String details,Double salaryMin, Double salaryMax, User user, Location location, Set<Technology> technologies, Set<Experience> experiences, Position position, Set<Worktype> worktypes) {
 		this.title = title;
 		this.details = details;
 		this.salaryMin = salaryMin;
 		this.salaryMax = salaryMax;
 		this.user = user;
 		this.location = location;
+		this.technologies = technologies;
+		this.experiences = experiences;
+		this.position = position;
+		this.worktypes = worktypes;
 	}
 
 	@Override

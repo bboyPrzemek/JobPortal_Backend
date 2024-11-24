@@ -7,23 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JobOfferRepository extends JpaRepository<JobOffer, Long>{
-	
-	@Query("SELECT j, loc, u, t, exp from JobOffer j "
-			+ "join fetch j.location loc "
-			+ "join fetch j.user u "
-			+ "left join fetch j.technologies t "
-			+ "left join fetch j.experiences exp where "
-			+ "j.title ILIKE %:title% AND loc.city ILIKE %:city%")
-	List<JobOffer> findByTitleContainingIgnoreCase(String title, String city);
-	
+public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JobOfferRepositoryCustom{
 	
 	@Override
-	@Query("SELECT j, loc, u, t, exp from JobOffer j "
+	@Query("SELECT j, loc, u, t, exp, pos, wt from JobOffer j "
 			+ "join fetch j.location loc "
 			+ "join fetch j.user u "
 			+ "left join fetch j.technologies t "
-			+ "left join fetch j.experiences exp")
+			+ "left join fetch j.experiences exp "
+			+ "left join fetch j.position pos "
+			+ "left join fetch j.worktypes wt")
 	List<JobOffer> findAll();
 	
 	

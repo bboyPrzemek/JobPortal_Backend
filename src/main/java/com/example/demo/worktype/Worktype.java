@@ -1,4 +1,4 @@
-package com.example.demo.technology;
+package com.example.demo.worktype;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,18 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Technology {
-	
+public class Worktype {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long Id;
 	private String name;
 	
-	
-	
-	
-	
-	public Technology(String name) {
+	public Worktype(String name) {
 		this.name = name;
 	}
+
 }
