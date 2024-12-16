@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.blazebit.persistence.PagedList;
+
 
 @Service
 public class JobOfferService {
@@ -13,16 +15,16 @@ public class JobOfferService {
 	private JobOfferRepository jobOfferRepository;
 	
 	
-	
 	public List<JobOffer> getJobOffers(){
 		List<JobOffer> jobOffers = jobOfferRepository.findAll();
 		return jobOffers;
 	}
 	
-	public List<JobOffer> searchOffers(String title, String city, Double salaryMin, Double salaryMax, String experience, String technology, String position, String workType){
-		
+	public PagedList<JobOffer> searchOffers(JobOfferSearchCriteria jobOfferSearchCriteria){
 		System.out.println("______________________");
-		return jobOfferRepository.findJobOffers(title, city, salaryMin, salaryMax, experience, technology, position, workType);
-		//return jobOfferRepository.findByTitleContainingIgnoreCase(title, city, salaryMin, salaryMax);
+		return jobOfferRepository.findJobOffers(jobOfferSearchCriteria);
+		
 	}
+	
+	
 }

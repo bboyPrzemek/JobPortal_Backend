@@ -1,70 +1,80 @@
 package com.example.demo.joboffer;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.blazebit.persistence.CriteriaBuilder;
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.PagedList;
+
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 
 public class JobOfferRepositoryImpl implements JobOfferRepositoryCustom{
+	
+	private static final int LIMIT = 10;
+	
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Autowired
+	private CriteriaBuilderFactory cbf;
 
 	@Override
-	public List<JobOffer> findJobOffers(String title, String city, Double salaryMin, Double salaryMax, String experience, String technology, String position, String workType) {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<JobOffer> criteriaQuery = criteriaBuilder.createQuery(JobOffer.class);
-		Root<JobOffer> jobOffer = criteriaQuery.from(JobOffer.class);
+	public PagedList<JobOffer> findJobOffers(JobOfferSearchCriteria jobOfferSearchCriteria) {
 		
-		jobOffer.fetch("location", JoinType.LEFT);
-		jobOffer.fetch("technologies", JoinType.LEFT);
-		jobOffer.fetch("experiences", JoinType.LEFT);
-		jobOffer.fetch("user", JoinType.LEFT);
-		jobOffer.fetch("position", JoinType.LEFT);
-		jobOffer.fetch("worktypes", JoinType.LEFT);
-		List<Predicate> predicates = new ArrayList<>();
+		int page = jobOfferSearchCriteria.getPage();
 		
-		if (!title.isBlank()) {
-			predicates.add(criteriaBuilder.like(criteriaBuilder.lower(jobOffer.get("title")), "%" + title.toLowerCase() + "%"));
+		if (page <= 0 ) {
+			page = 1;
+		}
+		CriteriaBuilder<JobOffer> criteriaBuilder = cbf.create(entityManager, JobOffer.class).from(JobOffer.class, "j")
+				.innerJoinFetch("worktypes","ow")
+				.innerJoinFetch("experiences", "exp")
+				.innerJoinFetch("location", "loc")
+				.innerJoinFetch("technologies", "tech")
+				.innerJoinFetch("position", "pos")
+				.innerJoinFetch("user", "u");
+	
+		if (!StringUtils.isBlank(jobOfferSearchCriteria.getTitle())) {
+			criteriaBuilder  = criteriaBuilder.where("j.title").like(false).expression("'" + jobOfferSearchCriteria.getTitle() + "'").noEscape();
 		}
 		
-		if (!city.isBlank()) {
-			predicates.add(criteriaBuilder.equal(jobOffer.get("location").get("city"), city ));
+		if (!StringUtils.isBlank(jobOfferSearchCriteria.getCity())) {
+			criteriaBuilder  = criteriaBuilder.where("loc.city").eq(jobOfferSearchCriteria.getCity());
 		}
 		
-		if (salaryMin != null && salaryMin > 0) {
-			predicates.add(criteriaBuilder.greaterThanOrEqualTo(jobOffer.get("salaryMin"), salaryMin));
+		if (jobOfferSearchCriteria.getSalaryMin() != null && jobOfferSearchCriteria.getSalaryMin() > 0) {
+			criteriaBuilder  = criteriaBuilder.where("j.salaryMin").ge(jobOfferSearchCriteria.getSalaryMin());
 		}
 		
-		if (salaryMax != null && salaryMax > 0) {
-			predicates.add(criteriaBuilder.lessThanOrEqualTo(jobOffer.get("salaryMax"), salaryMax));
+		if (jobOfferSearchCriteria.getSalaryMax() != null && jobOfferSearchCriteria.getSalaryMax() > 0) {
+			criteriaBuilder  = criteriaBuilder.where("j.salaryMax").le(jobOfferSearchCriteria.getSalaryMax());
 		}
 		
-		if (!experience.isBlank()) {
-			predicates.add(criteriaBuilder.equal(jobOffer.get("experiences").get("name"), experience));
+		if (!StringUtils.isBlank(jobOfferSearchCriteria.getExp())) {
+			criteriaBuilder  = criteriaBuilder.where("exp.name").eq(jobOfferSearchCriteria.getExp());
 		}
 		
-		if (!technology.isBlank()) {
-			predicates.add(criteriaBuilder.equal(jobOffer.get("technologies").get("name"), technology));
+		if (!StringUtils.isBlank(jobOfferSearchCriteria.getTech())) {
+			criteriaBuilder  = criteriaBuilder.where("tech.name").eq(jobOfferSearchCriteria.getTech());
 		}
 		
-		if (!position.isBlank()) {
-			predicates.add(criteriaBuilder.equal(jobOffer.get("position").get("name"), position));
+		if (!StringUtils.isBlank(jobOfferSearchCriteria.getPos())) {
+			criteriaBuilder  = criteriaBuilder.where("pos.name").eq(jobOfferSearchCriteria.getPos());
 		}
+	
+		if (!StringUtils.isBlank(jobOfferSearchCriteria.getWorkType())) {
+			criteriaBuilder  = criteriaBuilder.where("ow.name").eq(jobOfferSearchCriteria.getWorkType());
+		} 
 		
-		if (!workType.isBlank()) {
-			predicates.add(criteriaBuilder.equal(jobOffer.get("worktypes").get("name"), workType));
-		}
+		String orderBy = jobOfferSearchCriteria.getOrderBy();
+		orderBy = StringUtils.isBlank(orderBy) == true ? "salaryMin" : orderBy; 
 		
 		
-		 criteriaQuery.where(predicates.toArray(new Predicate[0]));
-		 return entityManager.createQuery(criteriaQuery).getResultList();
-		 
+		Boolean sortType = jobOfferSearchCriteria.getSort() == null || jobOfferSearchCriteria.getSort().equals("asc") ? true : false;
+		
+		return criteriaBuilder.orderBy(orderBy, sortType).orderByAsc("Id").page((page - 1) * LIMIT, LIMIT).getResultList();
 	}
-
+	
 }

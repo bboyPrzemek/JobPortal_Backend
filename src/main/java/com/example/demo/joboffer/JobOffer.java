@@ -1,6 +1,8 @@
 package com.example.demo.joboffer;
 
+import java.util.Date;
 import java.util.Set;
+
 import com.example.demo.experience.Experience;
 import com.example.demo.location.Location;
 import com.example.demo.position.Position;
@@ -21,9 +23,11 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
+@Setter
 @NoArgsConstructor
 @Entity
 public class JobOffer {
@@ -35,6 +39,7 @@ public class JobOffer {
 	private String details;
 	private Double salaryMin;
 	private Double salaryMax;
+	private Date createdDate;
 	
 	@ManyToOne
 	@JsonManagedReference
