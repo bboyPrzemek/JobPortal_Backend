@@ -24,6 +24,7 @@ import com.example.demo.position.PositionRepository;
 import com.example.demo.technology.Technology;
 import com.example.demo.technology.TechnologyRepository;
 import com.example.demo.user.User;
+import com.example.demo.user.UserService;
 import com.example.demo.user.UserRepository;
 import com.example.demo.worktype.Worktype;
 import com.example.demo.worktype.WorktypeRepository;
@@ -47,7 +48,8 @@ public class OfferConfig {
 	@Bean
 	CommandLineRunner commandLineRunner(
 			JobOfferRepository jobOfferRepository, 
-			UserRepository userRepository,
+			//UserRepository userRepository,
+			UserService userService,
 			LocationRepository locationRepository, 
 			ExperienceRepository experienceRepository,
 			TechnologyRepository technologyRepository,
@@ -83,11 +85,13 @@ public class OfferConfig {
 			tset.add(t);
 			
 			User  u = new User("a", "b", "TTMS Koszalin");
+			u.setEmail("5");
+			u.setPassword("555");
 			Location l = new Location("Koszalin", "zachodniopomorskie");
 			
 			locationRepository.save(l);
 		
-			userRepository.save(u);
+			u = userService.saveUser(u);
 			JobOffer j = 
 					new JobOffer("Ania", "opis", Double.valueOf(7000), Double.valueOf(10000), u, l, tset,eset, position, worktypeSet);
 			j.setCreatedDate(new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime());
@@ -96,19 +100,22 @@ public class OfferConfig {
 			
 			
 			User  u2 = new User("abc", "bccc", "Accenture");
-			userRepository.save(u2);
+			u2.setEmail("1");
+			u2.setPassword("2");
+			
+			u2 = userService.saveUser(u2);
 			Location l1 = new Location("Poznań", "wielkopolskie");
 			locationRepository.save(l1);
 			
 			
 			for (int i = 0; i< 100; i++) {
-				JobOffer j2 = new JobOffer("Przykladowa oferta", "opis2",Double.valueOf(5000), Double.valueOf(6000),u2,l1,tset,eset, position2, worktypeSet2);
+				JobOffer j2 = new JobOffer("Przykladowa oferta" + i, "opis2 + 1",Double.valueOf(5000+ 1), Double.valueOf(6000+ i),u2,l1,tset,eset, position2, worktypeSet2);
 				Integer k = i;
 				if (k == 30) {
 					k = 0;
 				}
 				
-				j2.setCreatedDate(new GregorianCalendar((2014+i), Calendar.MARCH, (11+i)).getTime());
+				j2.setCreatedDate(new GregorianCalendar((2014+k), Calendar.MARCH, (11+k)).getTime());
 				jobOfferRepository.save(j2);
 			}
 			
