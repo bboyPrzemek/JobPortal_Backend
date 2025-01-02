@@ -17,6 +17,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+	
+	private final String CLIENT_URL = "http://localhost:4200";
 
 	@Bean
 	public static PasswordEncoder passwordEncoder() {
@@ -29,11 +31,12 @@ public class SecurityConfig {
 		 http.authorizeHttpRequests(
 				 auth -> auth
 				 .requestMatchers("/login").permitAll()
+				 .requestMatchers("/register").permitAll()
 				 .requestMatchers("/").permitAll()
 				 .anyRequest().authenticated())
 		 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 	     .csrf(AbstractHttpConfigurer::disable)
-	     .formLogin(form -> form.loginPage("http://localhost:4200/login").loginProcessingUrl("/login"));
+	     .formLogin(form -> form.loginPage(CLIENT_URL + "/login").loginProcessingUrl("/login"));
 	     return http.build();
 	}
 	

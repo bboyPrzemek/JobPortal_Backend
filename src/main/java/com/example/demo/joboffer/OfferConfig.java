@@ -21,6 +21,7 @@ import com.example.demo.location.Location;
 import com.example.demo.location.LocationRepository;
 import com.example.demo.position.Position;
 import com.example.demo.position.PositionRepository;
+import com.example.demo.registration.RegisterUserDTO;
 import com.example.demo.technology.Technology;
 import com.example.demo.technology.TechnologyRepository;
 import com.example.demo.user.User;
@@ -84,14 +85,14 @@ public class OfferConfig {
 			technologyRepository.save(t);
 			tset.add(t);
 			
-			User  u = new User("a", "b", "TTMS Koszalin");
-			u.setEmail("5");
-			u.setPassword("555");
+			
+			RegisterUserDTO registerUserDTO = new RegisterUserDTO("a", "b", "TTMS Koszalin");
+			
 			Location l = new Location("Koszalin", "zachodniopomorskie");
 			
 			locationRepository.save(l);
 		
-			u = userService.saveUser(u);
+			User u = userService.saveUser(registerUserDTO);
 			JobOffer j = 
 					new JobOffer("Ania", "opis", Double.valueOf(7000), Double.valueOf(10000), u, l, tset,eset, position, worktypeSet);
 			j.setCreatedDate(new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime());
@@ -99,11 +100,9 @@ public class OfferConfig {
 			jobOfferRepository.save(j);
 			
 			
-			User  u2 = new User("abc", "bccc", "Accenture");
-			u2.setEmail("1");
-			u2.setPassword("2");
+			RegisterUserDTO registerUserDTO2 = new RegisterUserDTO("1", "2", "Accenture");
 			
-			u2 = userService.saveUser(u2);
+			User u2 = userService.saveUser(registerUserDTO2);
 			Location l1 = new Location("Poznań", "wielkopolskie");
 			locationRepository.save(l1);
 			

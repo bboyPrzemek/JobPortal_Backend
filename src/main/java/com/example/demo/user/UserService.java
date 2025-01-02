@@ -10,6 +10,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.demo.exceptions.UserExistsException;
+import com.example.demo.registration.RegisterUserDTO;
+
 @Service
 public class UserService implements UserDetailsService{
 	
@@ -30,9 +33,13 @@ public class UserService implements UserDetailsService{
 	        return new UserDetailsImpl(user);
 	}
 	
-	public User saveUser(User user) {
-		User u = new User(user.getDisplayName(),user.getEmail(), "aaa");
-		u.setPassword(passwordEncoder.encode(user.getPassword()));
+	public User saveUser(RegisterUserDTO registerUserDTO) throws UserExistsException {
+		User user  = userRepository.findByEmail(registerUserDTO.getEmail());
+		
+		if (user != null) {
+			throw new UserExistsException("Email address " +  user.getEmail() + " exists in database!");
+		}
+		User u = new User(registerUserDTO.getEmail(), passwordEncoder.encode(registerUserDTO.getPassword()), registerUserDTO.getDisplayName());
 		return userRepository.save(u);
 	}
 
