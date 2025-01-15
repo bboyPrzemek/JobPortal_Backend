@@ -35,4 +35,11 @@ public class UserDetailsImpl implements UserDetails{
 		
 	}
 
+	public Long getId() {
+		return user.getId();
+	}
+	
+	public String getDisplayName() {
+		return user.getDisplayName();
+	}
 }

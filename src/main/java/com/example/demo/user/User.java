@@ -23,7 +23,6 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long Id;
-	private String name;
 	
 	@Column(nullable = false, unique = true)
 	@Setter
@@ -41,8 +40,7 @@ public class User {
 	
 	public User() {}
 	
-	public User(String name, String email) {
-		this.name = name;
+	public User(String email) {
 		this.email = email;
 	}
 	

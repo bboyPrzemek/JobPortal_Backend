@@ -12,16 +12,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.demo.exceptions.UserExistsException;
 import com.example.demo.registration.RegisterUserDTO;
+import com.example.demo.security.SecurityContextHelper;
 
 @Service
 public class UserService implements UserDetailsService{
 	
 	@Autowired
 	private UserRepository userRepository;
-	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
+	@Autowired
+	private SecurityContextHelper securityContextHelper;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -42,7 +43,25 @@ public class UserService implements UserDetailsService{
 		User u = new User(registerUserDTO.getEmail(), passwordEncoder.encode(registerUserDTO.getPassword()), registerUserDTO.getDisplayName());
 		return userRepository.save(u);
 	}
-
 	
-
+	public UserDao getLoggedUserDetails() {
+		UserDao uDao = null;
+		UserDetailsImpl uDetails = securityContextHelper.getLoggedUserDetails();
+		if (uDetails != null) {
+			uDao = new UserDao();
+			uDao.setEmail(uDetails.getUsername());
+			uDao.setLogoUrl("");
+			uDao.setDisplayName(uDetails.getDisplayName());
+		}
+		return uDao;
+	}
+	
+	public Long getLoggedUserId() {
+		Long userId = null;
+		UserDetailsImpl userDetailsImpl = securityContextHelper.getLoggedUserDetails();
+		if (userDetailsImpl != null) {
+			userId = userDetailsImpl.getId();
+		}
+		return userId;
+	}
 }

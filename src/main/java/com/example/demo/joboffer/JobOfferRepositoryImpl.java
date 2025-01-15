@@ -1,5 +1,8 @@
 package com.example.demo.joboffer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.blazebit.persistence.CriteriaBuilder;
@@ -76,5 +79,30 @@ public class JobOfferRepositoryImpl implements JobOfferRepositoryCustom{
 		
 		return criteriaBuilder.orderBy(orderBy, sortType).orderByAsc("Id").page((page - 1) * LIMIT, LIMIT).getResultList();
 	}
+
+	@Override
+	public List<JobOffer> findJobOffersByUserId(Long Id) {
+		
+		if (Id == null) {
+			return new ArrayList<JobOffer>();
+		}
+	
+		CriteriaBuilder<JobOffer> criteriaBuilder = cbf.create(entityManager, JobOffer.class).from(JobOffer.class, "j")
+				.innerJoinFetch("worktypes","ow")
+				.innerJoinFetch("experiences", "exp")
+				.innerJoinFetch("location", "loc")
+				.innerJoinFetch("technologies", "tech")
+				.innerJoinFetch("position", "pos")
+				.innerJoinFetch("user", "u");
+		
+		criteriaBuilder.where("u.Id").eq(Id);
+		
+		return criteriaBuilder.getResultList();
+	}
+	
+	
+	
+	
+	
 	
 }
