@@ -68,11 +68,17 @@ public class OfferConfig {
 			worktypeRepository.save(office);
 			worktypeSet2.add(office);
 			
+			Worktype h = new Worktype("Hybrid");
+			worktypeRepository.save(h);
+			
 			Position position = new Position("Backend");
 			positionRepository.save(position);
 			
 			Position position2 = new Position("Frontend");
 			positionRepository.save(position2);
+			
+			Position position3 = new Position("Fullstack");
+			positionRepository.save(position3);
 			
 			
 			Experience exp = new Experience("Mid");
@@ -80,15 +86,25 @@ public class OfferConfig {
 			experienceRepository.save(exp);
 			eset.add(exp);
 			
+			
+			Experience exp2 = new Experience("Junior");
+			Experience exp3 = new Experience("Senior");
+			
+			experienceRepository.save(exp2);
+			experienceRepository.save(exp3);
+			
 			Technology t = new Technology("Salesforce");
+			Technology t2 = new Technology("Java");
 			Set<Technology> tset = new HashSet<>();
 			technologyRepository.save(t);
+			technologyRepository.save(t2);
 			tset.add(t);
+			
 			
 			
 			RegisterUserDTO registerUserDTO = new RegisterUserDTO("a", "b", "TTMS Koszalin");
 			
-			Location l = new Location("Koszalin", "zachodniopomorskie");
+			Location l = new Location("Koszalin");
 			
 			locationRepository.save(l);
 		
@@ -103,7 +119,7 @@ public class OfferConfig {
 			RegisterUserDTO registerUserDTO2 = new RegisterUserDTO("1", "2", "Accenture");
 			
 			User u2 = userService.saveUser(registerUserDTO2);
-			Location l1 = new Location("Poznań", "wielkopolskie");
+			Location l1 = new Location("Poznań");
 			locationRepository.save(l1);
 			
 			
@@ -118,10 +134,12 @@ public class OfferConfig {
 				jobOfferRepository.save(j2);
 			}
 			
-			Location l2 = new Location("Warszawa", "Mazowieckie");
-			Location l3 = new Location("Gdańsk", "pomorskie");
-			Location l4 = new Location("Kraków", "małopolskie");
-			Location l5= new Location("Lublin", "lubelskie");
+			
+			
+			Location l2 = new Location("Warszawa");
+			Location l3 = new Location("Gdańsk");
+			Location l4 = new Location("Kraków");
+			Location l5= new Location("Lublin");
 			
 			locationRepository.save(l2);
 			locationRepository.save(l3);

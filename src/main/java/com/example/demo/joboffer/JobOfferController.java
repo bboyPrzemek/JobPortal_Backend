@@ -1,25 +1,22 @@
 package com.example.demo.joboffer;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
-
 import com.blazebit.persistence.PagedList;
-import com.example.demo.security.SecurityContextHelper;
-import com.example.demo.user.UserService;
 
 @RestController
 public class JobOfferController {
 	
 	@Autowired
 	private JobOfferService jobOfferService;
-	@Autowired
-	private UserService userService;
+	
 	
 	@CrossOrigin
 	@GetMapping
@@ -34,13 +31,20 @@ public class JobOfferController {
 		
 	}
 	
-	
 	@CrossOrigin
 	@GetMapping("/s")
 	public List<JobOffer> searchData(){
-		Long userId = userService.getLoggedUserId();
-		List<JobOffer> pagedJobOffers = jobOfferService.getOffersByUserId(userId);
-		return pagedJobOffers;
+		return jobOfferService.getOffersByUserId();
 	}
 	
+	@CrossOrigin
+	@PostMapping("/create")
+	public ResponseEntity<String> create(@RequestBody NewJobOfferDto newJobOfferDto){
+		JobOffer jobOffer = jobOfferService.saveJobOffer(newJobOfferDto);
+         if (jobOffer != null) {
+             return new ResponseEntity<>("Created", HttpStatus.CREATED);
+         } else {
+             return new ResponseEntity<>("Error", HttpStatus.INTERNAL_SERVER_ERROR);
+         }
+	}
 }

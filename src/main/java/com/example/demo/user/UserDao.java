@@ -16,3 +16,4 @@ public class UserDao {
 	private String email;
 	private String logoUrl;
 }
+

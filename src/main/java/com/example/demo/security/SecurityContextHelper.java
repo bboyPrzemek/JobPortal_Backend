@@ -11,7 +11,7 @@ import com.example.demo.user.UserDetailsImpl;
 @Component
 public class SecurityContextHelper {
 
-    public UserDetailsImpl getLoggedUserDetails() {
+    public UserDetailsImpl getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
             UserDetailsImpl userDetailsImpl = (UserDetailsImpl)authentication.getPrincipal();

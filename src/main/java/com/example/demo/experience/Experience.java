@@ -20,6 +20,4 @@ public class Experience {
 	public Experience(String name) {
 		this.name = name;
 	}
-	
-	
 }

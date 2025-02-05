@@ -13,7 +13,12 @@ public class UserController {
 	
 	@GetMapping("/me")
 	public UserDao userDetails() {
-		return userService.getLoggedUserDetails();
+		return userService.getUserDetails();
+	}
+	
+	@GetMapping("/status")
+	public Boolean getAuthStatus() {
+		return true;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.example.demo.user;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,9 +46,9 @@ public class UserService implements UserDetailsService{
 		return userRepository.save(u);
 	}
 	
-	public UserDao getLoggedUserDetails() {
+	public UserDao getUserDetails() {
 		UserDao uDao = null;
-		UserDetailsImpl uDetails = securityContextHelper.getLoggedUserDetails();
+		UserDetailsImpl uDetails = securityContextHelper.getUserDetails();
 		if (uDetails != null) {
 			uDao = new UserDao();
 			uDao.setEmail(uDetails.getUsername());
@@ -58,10 +60,14 @@ public class UserService implements UserDetailsService{
 	
 	public Long getLoggedUserId() {
 		Long userId = null;
-		UserDetailsImpl userDetailsImpl = securityContextHelper.getLoggedUserDetails();
+		UserDetailsImpl userDetailsImpl = securityContextHelper.getUserDetails();
 		if (userDetailsImpl != null) {
 			userId = userDetailsImpl.getId();
 		}
 		return userId;
+	}
+	
+	public Optional<User> findUserById(Long Id) {
+		return userRepository.findById(Id);
 	}
 }

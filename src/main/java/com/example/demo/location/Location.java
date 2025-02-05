@@ -20,7 +20,7 @@ public class Location {
 	private Long Id;
 	private String city;
 	
-	public Location(String city, String province) {
+	public Location(String city) {
 		this.city = city;
 	}
 }

@@ -15,6 +15,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.example.demo.user.User;
+import com.example.demo.user.UserDetailsImpl;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
@@ -28,7 +33,6 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
 		 http.authorizeHttpRequests(
 				 auth -> auth
 				 .requestMatchers("/").permitAll()
@@ -37,8 +41,16 @@ public class SecurityConfig {
 				 .anyRequest().authenticated())
 		 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 	     .csrf(AbstractHttpConfigurer::disable)
+	     .exceptionHandling(exception -> exception.authenticationEntryPoint((request, response, authException) -> {
+	    	 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	     }))
 	     .formLogin(form -> form
-	    		 .loginPage(CLIENT_URL + "/login").loginProcessingUrl("/login"));
+	    		 .loginPage(CLIENT_URL + "/login").loginProcessingUrl("/login")
+	    		 .successHandler((request, response, authentication) -> {
+	    			response.setStatus(HttpServletResponse.SC_OK);
+	    		 })).logout(logout->logout.logoutSuccessHandler((request, response, authentication) ->{
+	    			 response.setStatus(HttpServletResponse.SC_OK);
+	    		 } ));
 	     return http.build();
 	}
 	
