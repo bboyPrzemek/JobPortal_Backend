@@ -1,8 +1,12 @@
 package com.example.demo.joboffer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,14 +44,25 @@ public class JobOfferService {
 	private LocationService locationService;
 	
 	
-	
 	public List<JobOffer> getJobOffers(){
 		List<JobOffer> jobOffers = jobOfferRepository.findAll();
 		return jobOffers;
 	}
 	
-	public PagedList<JobOffer> searchOffers(JobOfferSearchCriteria jobOfferSearchCriteria){
-		return jobOfferRepository.findJobOffers(jobOfferSearchCriteria);
+	public JobOfferDTO searchOffers(JobOfferSearchCriteria jobOfferSearchCriteria){
+		PagedList<JobOffer> pagedJobOffers =  jobOfferRepository.findJobOffers(jobOfferSearchCriteria);
+		
+		
+		Map<Long, JobOffer> jo = new LinkedHashMap<>();
+		pagedJobOffers.forEach(p -> jo.put(p.getId(), p));
+		List<JobOffer> pagedOffers = new ArrayList<>(jo.values());
+		
+		return new JobOfferDTO(
+				pagedOffers,
+				pagedJobOffers.getPage(), 
+				pagedJobOffers.getTotalPages(),
+				pagedJobOffers.getTotalSize());
+		
 	}
 	
 	public List<JobOffer> getOffersByUserId(){
@@ -56,10 +71,19 @@ public class JobOfferService {
 	}
 	
 	public JobOffer saveJobOffer(NewJobOfferDto newJobOfferDto) {
-		List<String> experiences =  Arrays.asList(newJobOfferDto.getExperiences());
+		List<String> experiences = Arrays.stream(newJobOfferDto.getExperiences())
+				.map(NewJobOfferDto.Experiences :: getValue)
+				.collect(Collectors.toList());
+		
 		String position = newJobOfferDto.getPosition();
-		List<String> technologies = Arrays.asList(newJobOfferDto.getTechnologies());
-		List<String> workTypes = Arrays.asList(newJobOfferDto.getWorktypes());
+		List<String> technologies = Arrays.stream(newJobOfferDto.getTechnologies())
+				.map(NewJobOfferDto.Technologies :: getValue)
+				.collect(Collectors.toList());
+		
+		List<String> workTypes = Arrays.stream(newJobOfferDto.getWorktypes())
+				.map(NewJobOfferDto.Worktypes :: getValue)
+				.collect(Collectors.toList());
+		
 		String location = newJobOfferDto.getLocation();
 		String title = newJobOfferDto.getTitle();
 		String details = newJobOfferDto.getDetails();

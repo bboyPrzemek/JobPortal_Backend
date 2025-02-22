@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JobOfferDTO {
-		List<JobOffer> jobOffers;
+		private List<JobOffer> jobOffers;
 		private Integer currentPage;
 		private Integer pages;
 		private Long totalRecords;
