@@ -1,7 +1,6 @@
 package com.example.demo.joboffer;
 
 import java.util.Calendar;
-
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 
 import com.blazebit.persistence.Criteria;
 import com.blazebit.persistence.CriteriaBuilderFactory;
@@ -26,7 +24,6 @@ import com.example.demo.technology.Technology;
 import com.example.demo.technology.TechnologyRepository;
 import com.example.demo.user.User;
 import com.example.demo.user.UserService;
-import com.example.demo.user.UserRepository;
 import com.example.demo.worktype.Worktype;
 import com.example.demo.worktype.WorktypeRepository;
 
