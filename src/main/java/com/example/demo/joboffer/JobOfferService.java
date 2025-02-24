@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,6 +64,10 @@ public class JobOfferService {
 				pagedJobOffers.getTotalPages(),
 				pagedJobOffers.getTotalSize());
 		
+	}
+	
+	public JobOffer findJobOfferById(Long Id){
+		return jobOfferRepository.findJobOfferById(Id);
 	}
 	
 	public List<JobOffer> getOffersByUserId(){

@@ -37,6 +37,7 @@ public class SecurityConfig {
 				 auth -> auth
 				 .requestMatchers("/").permitAll()
 				 .requestMatchers("/login").permitAll()
+				 .requestMatchers("/offer/**").permitAll()
 				 .requestMatchers("/register").permitAll()
 				 .anyRequest().authenticated())
 		 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
